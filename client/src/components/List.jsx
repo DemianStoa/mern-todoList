@@ -5,16 +5,20 @@ import ModeIcon from '@mui/icons-material/Mode';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useStateContext } from "../context/listContext"
 import { deleteList, updateList } from '../api/todoListApi';
+import toast from 'react-hot-toast';
 
 
 const List = ({ index, list}) => {
-  const { onDelete, onUpdate, setEditList,  } = useStateContext()
+  const { onDelete, onUpdate, onEdit } = useStateContext()
 
   const handleDelete = async() => {
       try {
         await deleteList(list._id)
         onDelete(list._id)
-      }catch(err){console.log(err)}
+        toast.success("Successfully Deleted ")
+      }catch(err){
+        toast.error(err.message)
+      }
     
  }
 
@@ -27,7 +31,7 @@ const List = ({ index, list}) => {
  }
 
  const handleEdit =  () => {
-   setEditList(list)
+  onEdit(list)
  }
 
 

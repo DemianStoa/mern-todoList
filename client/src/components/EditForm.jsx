@@ -3,20 +3,23 @@ import { Box, Button, TextField } from "@mui/material"
 import { createList } from '../api/todoListApi'
 import { useStateContext } from '../context/listContext'
 import {  updateList } from '../api/todoListApi';
-
+import toast from 'react-hot-toast';
 
 const EditForm = () => {
-  const [text, setText] = useState("start edit")
-  const { onEdit, editList } = useStateContext()
+ // const [text, setText] = useState("start edit")
+  const { onSave, editList, editText, setEditText } = useStateContext()
   
 
   const handleEdit = async () => {
     const list = {...editList}
-    list.text = text
+    list.text = editText
     try {
       await updateList(list)
-        onEdit(list)
-    }catch(err){console.log(err)}
+        onSave(list)
+        toast.success("Successfully Added ")
+    }catch(err){
+      toast.error(err.message)
+    }
    }
 
    useEffect(() => {
@@ -30,8 +33,8 @@ const EditForm = () => {
     position:"absolute", zIndex:"100" ,top: ( Object.keys(editList).length > 0)? "50px" : "-500rem"}}>
         <TextField 
         type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={editText}
+        onChange={(e) => setEditText(e.target.value)}
         sx={{backgroundColor:"#eee", 
         margin:"0", padding:"0",width:"75%",
          }}/>

@@ -10,6 +10,7 @@ const initialState = {
  export const StateContext = ({ children }) => {
     const [todoLists, setTodoLists] = useState([])
     const [editList, setEditList] = useState({})
+    const [editText, setEditText] = useState("")
  
     function onAdd(list) {
         setTodoLists([list, ...todoLists])
@@ -28,7 +29,7 @@ const initialState = {
        setTodoLists(updatedLists)
     }
 
-    function onEdit(updatedList) {
+    function onSave(updatedList) {
        const updatedLists = todoLists.filter((list) => {
         if (list._id == updatedList._id) return updatedList
         return list 
@@ -36,16 +37,23 @@ const initialState = {
        setTodoLists(updatedLists)
        setEditList({})
     }
+    function onEdit(list) {
+      setEditList(list)
+      setEditText(list.text)
+    }
 
     return (<Context.Provider value={{
          todoLists,
          editList,
+         editText,
          setTodoLists,
          onAdd,
          onDelete,
          onUpdate,
-         onEdit,
-         setEditList
+         onSave,
+         setEditList,
+         setEditText,
+         onEdit
     }}>{ children }</Context.Provider>)
 }
 

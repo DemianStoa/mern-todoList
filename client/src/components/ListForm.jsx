@@ -2,6 +2,7 @@ import React, { useState, useReducer } from 'react'
 import { Box, Button, TextField } from "@mui/material"
 import { createList } from '../api/todoListApi'
 import { useStateContext } from '../context/listContext'
+import toast from 'react-hot-toast';
 
 
 const ListForm = () => {
@@ -14,7 +15,10 @@ const ListForm = () => {
         const {data} = await createList(text)  
         onAdd(data)
         setText("")
-      }catch(err){console.log(err)}
+        toast.success("Successfully Added ")
+      }catch(err){
+        toast.error(err.message)
+       }
     }
     else {
       alert("cannot be empty")
